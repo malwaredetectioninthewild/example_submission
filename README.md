@@ -24,7 +24,7 @@ This `<team_identifier>.tar` file will be your submission.
 
 To make a submission, email [Yigitcan Kaya](https://yigitcankaya.github.io) at **yigitcan at ucsb dot edu**. 
 
-For your emails, use the subject line `MalwareITW Submission: <team_identifier>` and include a Google Drive download link for your image's `.tar` file in the email's body.
+Use the subject line `MalwareITW Submission: <team_identifier>` for your emails and include a Google Drive download link for your image's `.tar` file in the email's body.
 
 Each team can only make one submission a week.
 
@@ -51,7 +51,7 @@ The container will be given the following resources:
 * 10 GB Storage Space (for temporary files of your submission)
 * CUDA-compatible GPU with 16 GB VRAM
 
-Our full testing data contains around 400K trace files. We will timeout and terminate your container **4 hours** after `docker run` is called.
+Our complete testing data contains around 400K trace files. We will timeout and terminate your container **4 hours** after `docker run` is called.
 
 ### Recording Submission Run-time Information
 
@@ -63,19 +63,19 @@ Please see `ExampleSubmissionFiles/main.py:135` for instructions to print your f
 
 ### Including Multiple Models Within the Same Submission
 
-We will use the `results.txt` file your container creates under `OutputFiles` to perform our evalution. This file contains your model's prediction scores on each individual JSON trace under `TestFiles`
+We will use the `results.txt` file your container creates under `OutputFiles` to perform our evaluation. This file contains your model's prediction scores on each JSON trace under `TestFiles`
 
-If your container creates multiple results files, named as `results_1.txt`, `results_2.txt` and so on, we will perform the evaluation on each, individually.
+If your container creates multiple results files, named as `results_1.txt`, `results_2.txt`, and so on, we will perform the evaluation on each, individually.
 
 This allows participants to perform, for example, hyper-parameter tuning for their approaches without needing to make multiple submissions.
 
-If a submission creates multiple results files, we will send an email to the submitter team the evaluation results for each and list the best one in our leaderboard.
+If a submission creates multiple results files, we will email the submitter team the evaluation results for each and list the best one in our leaderboard.
 
-For each submission, at most 50 results files will be used for evaluation (indexed from 1 to 50).
+For each submission, at most 50 results files (indexed from 1 to 50) will be used for evaluation.
 
 ### Example Submission
 
-We included a `DockerFile` to build our example submission image.
+We included a `Dockerfile` to build our example submission image.
 
 We also included an example `TestFiles` directory that contains 10 JSON trace files.
 
@@ -85,6 +85,6 @@ To build our image, first download and extract the auxiliary files (the model fi
 
 Then, run `docker build` in the same directory as our `Dockerfile`.
 
-The results files our example submission creates when successfuly run on the included `TestFiles` are under `OutputFiles` directory.
+The results files our example submission creates when successfully run on the included `TestFiles` are under the `OutputFiles` directory.
 
 Please see `ExampleSubmissionFiles/main.py` for instructions on how to create multiple results files for evaluation.
