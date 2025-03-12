@@ -1,4 +1,4 @@
-## The example submission format  **[Malware Detection In the Wild Leaderboard](https://malwaredetectioninthewild.github.io/)** 
+## The documentation for the submission format for  **[Malware Detection In the Wild Leaderboard](https://malwaredetectioninthewild.github.io/)** 
 
 ### [See our SaTML 2025 paper](https://arxiv.org/abs/2405.06124)
 
