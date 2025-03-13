@@ -36,7 +36,7 @@ After receiving your submission, we will execute the following commands:
 
 `docker load -i /path/<team_identifier>.tar`
 
-2) To get the prediction results (saved as `results.txt` under `TestFiles`) on the JSON testing trace files under `TestFiles`:
+2) To get the prediction results (saved as `results.txt` under `OutputFiles`) on the JSON testing trace files under `TestFiles`:
 
 `docker run --rm --network none --gpus all  -v /host/path/TestFiles:/TestFiles/ -v /host/path/OutputFiles:/OutputFiles/ <team_identifier> /TestFiles /OutputFiles`
 
