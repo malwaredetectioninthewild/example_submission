@@ -36,7 +36,10 @@ def feature_processing(input_dir):
 
     report_indices = []
     features = []
-    for file in filenames:
+    for ii, file in enumerate(filenames):
+
+        if ii % 10000 == 0:
+            print(f'Feature Processing {ii+1}/{len(filenames)}\n')
 
         cur_index = int(file.split('.')[0])
 
@@ -87,7 +90,7 @@ def get_model_probs():
 
     # make inference to get prediction scores from the model, we care about the malware-ness score 
     # ([:,0] gives the benign-ness score and [:,1 ] gives the malwareness score in our model implementation)
-    probs = model.predict_proba(feature_vectors)[:,1].tolist()
+    probs = model.predict_proba(feature_vectors, batch_size=4096, logging=True)[:,1].tolist()
 
     return probs
 

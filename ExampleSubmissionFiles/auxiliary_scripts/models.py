@@ -73,7 +73,7 @@ class Classifier(nn.Module):
         x = self.classifier.classifier[:-1](x)
         return x
 
-    def predict_proba(self, feats, temperature=1, batch_size=1024):
+    def predict_proba(self, feats, temperature=1, batch_size=1024, logging=False):
 
         device = 'cuda' if next(self.parameters()).is_cuda else 'cpu'
         loader = dutils.get_loader(dutils.ManualData(feats, dtype=self.dtype, device=device), shuffle=False, batch_size=batch_size, device=device)
@@ -82,7 +82,11 @@ class Classifier(nn.Module):
 
         all_preds = []
 
-        for x  in loader:
+        for ii, x in enumerate(loader):
+
+            if logging and ii % 10 == 0:
+                print(f'Inference batch {ii+1}/{len(loader)}\n')
+
             x = x.to(device, dtype=self.dtype)
 
             with torch.no_grad():
