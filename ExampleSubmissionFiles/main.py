@@ -5,6 +5,7 @@ import pickle
 import json
 import numpy as np
 import time
+import math
 
 from auxiliary_scripts.utils import load_model
 from pathlib import Path
@@ -24,6 +25,7 @@ Path(temp_dir).mkdir(exist_ok=True)
 # read the raw reports in standardized format and convert them to the feature vectors the model expects
 def feature_processing(input_dir):
 
+    batch_size = 25000
     # PCA learned on the training set for dimensionality reduction
     with open(os.path.join(auxiliary_files_path, 'pca.pkl'), 'rb') as fp:
         pca = pickle.load(fp)
@@ -36,19 +38,28 @@ def feature_processing(input_dir):
 
     report_indices = []
     features = []
-    for ii, file in enumerate(filenames):
+    num_batches = math.ceil(len(filenames)/batch_size)
 
-        if ii % 10000 == 0:
-            print(f'Feature Processing {ii+1}/{len(filenames)}\n')
+    for batch_ii in range(num_batches):
 
-        cur_index = int(file.split('.')[0])
+        indices = (batch_ii*batch_size, (batch_ii+1)*batch_size)
+        cur_filenames = filenames[indices[0]:indices[1]]
+    
+        print(f'Feature Processing batch {batch_ii+1}/{num_batches}, indices: {indices}, num files: {len(cur_filenames)} \n', flush=True)
 
-        with open(os.path.join(input_dir, file), 'r') as fp:
-            raw_trace = json.load(fp)
+        cur_report_indices = [int(file.split('.')[0]) for file in cur_filenames]
+
+        cur_batch_raw_traces = []
+
+        for file in cur_filenames:
+            with open(os.path.join(input_dir, file), 'r') as fp:
+                raw_trace = json.load(fp)
+            
+            cur_batch_raw_traces.append(raw_trace)
         
-        cur_feats = proc.get_featurized_input_ngrams([raw_trace], kept_tokens_dict, pca)
-        features.append(cur_feats)
-        report_indices.append(cur_index)
+        cur_feats = proc.get_featurized_input_ngrams(cur_batch_raw_traces, kept_tokens_dict, pca)
+        features.extend(cur_feats)
+        report_indices.extend(cur_report_indices)
 
     report_indices = np.asarray(report_indices)
 
@@ -90,6 +101,7 @@ def get_model_probs():
 
     # make inference to get prediction scores from the model, we care about the malware-ness score 
     # ([:,0] gives the benign-ness score and [:,1 ] gives the malwareness score in our model implementation)
+    # use batch size of 4096 to get the predictions
     probs = model.predict_proba(feature_vectors, batch_size=4096, logging=True)[:,1].tolist()
 
     return probs
