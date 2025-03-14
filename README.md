@@ -90,3 +90,12 @@ The results files our example submission creates when successfully run on the in
 Please see `ExampleSubmissionFiles/main.py` for instructions on how to create multiple results files for evaluation.
 
 Please note how our example submission uses batching for feature extraction (`ExampleSubmissionFiles/main.py::26`) and for inference (`ExampleSubmissionFiles/main.py::90`). This ensures that our submission is both runtime efficient and doesn't use excessive GPU or system memory, which can cause a submission to fail.
+
+
+### Example Evaluation Report
+
+For each created results file under `OutputFiles`, we will perform evaluation on both our endpoint and sandbox test datasets and generate a performance report that will be send to the submitter.
+
+You can see `ExampleEvaluationReport.json` for an example performance report that you will receive.
+
+Please contact us if you need more metrics or information in these reports to assist your development.
